@@ -10,4 +10,6 @@ System Monitoring in Python
 ## Running
 - `cd system-monitor/`
 - `pipenv shell`
+
+### Network monitoring
 - `python src/monitors/network.py`
