@@ -37,23 +37,27 @@ def print_network_stats():
 
     while True:
         bytes_recvd_prev_total = bytes_recvd_curr_total
-        bytes_recvd_curr_total = net_io_counters().bytes_recv
-        current_bytes_recvd = bytes_recvd_curr_total - bytes_recvd_prev_total
+        try:
+            bytes_recvd_curr_total = net_io_counters().bytes_recv
+        except OSError:
+            pass
+        else:
+            current_bytes_recvd = bytes_recvd_curr_total - bytes_recvd_prev_total
 
-        bytes_recvd_this_session += current_bytes_recvd
-        total_bytes_recvd = update_total_bytes(total_bytes_recvd, current_bytes_recvd)
-        maximum_bytes_recvd = update_max_byte_rate(current_bytes_recvd / interval_sec)
+            bytes_recvd_this_session += current_bytes_recvd
+            total_bytes_recvd = update_total_bytes(total_bytes_recvd, current_bytes_recvd)
+            maximum_bytes_recvd = update_max_byte_rate(current_bytes_recvd / interval_sec)
 
-        total_bytes = auto_convert_bytes(total_bytes_recvd)
-        session_bytes = auto_convert_bytes(bytes_recvd_this_session)
-        current_byte_rate = auto_convert_bytes(current_bytes_recvd / interval_sec)
-        maximum_byte_rate = auto_convert_bytes(maximum_bytes_recvd / interval_sec)
+            total_bytes = auto_convert_bytes(total_bytes_recvd)
+            session_bytes = auto_convert_bytes(bytes_recvd_this_session)
+            current_byte_rate = auto_convert_bytes(current_bytes_recvd / interval_sec)
+            maximum_byte_rate = auto_convert_bytes(maximum_bytes_recvd / interval_sec)
 
-        print(
-            f'\rDATA: ({total_bytes}B, {session_bytes}B)    '
-            f'RATE: ({maximum_byte_rate}B/s, {current_byte_rate}B/s)    ',
-            end='', flush=True
-        )
+            print(
+                f'\rDATA: ({total_bytes}B, {session_bytes}B)    '
+                f'RATE: ({maximum_byte_rate}B/s, {current_byte_rate}B/s)    ',
+                end='', flush=True
+            )
 
         sleep(interval_sec)
 
