@@ -2,7 +2,6 @@
 System Monitoring in Python
 
 ## Installation
-Run commands:
 - `git clone https://github.com/khubaib321/system-monitor.git`
 - `cd system-monitor/`
 - `pip install pipenv`
